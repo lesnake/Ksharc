@@ -22,9 +22,6 @@ Plans
 -----
 
 * Use kernel coding standards
-* Remove user space API references  
-* Build as a standalone module
-* Integrate in the crypto API  
 * Make a device to test proper operation from user space
 * Add sysfs entries to test various parameters/read stats    
 * Tests once in a while
@@ -33,6 +30,9 @@ Plans
 
 Done
 ----
+* Remove user space API references
+* Integrate in the crypto API
+* Build as a standalone module
 
 To do
 -----
