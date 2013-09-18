@@ -26,6 +26,20 @@
 #include <api.h>
 #include <globals.h>
 
+/**************** Stub functions *********************/
+SHARC_FORCE_INLINE sharc_bool sharc_header_checkValidity(sharc_header* restrict header) {
+	return 0;
+}
+SHARC_FORCE_INLINE uint_fast32_t sharc_header_read(sharc_byte_buffer* restrict in, sharc_header* restrict header) {
+	return 0;
+}
+SHARC_FORCE_INLINE uint_fast32_t sharc_header_write(sharc_byte_buffer* restrict out, const SHARC_HEADER_ORIGIN_TYPE originType, const SHARC_COMPRESSION_MODE compressionMode, SHARC_BLOCK_TYPE blockType, const struct stat* restrict fileAttributes) {
+	return 0;
+}
+SHARC_FORCE_INLINE sharc_bool sharc_header_restoreFileAttributes(sharc_header_file_information * fileInformationHeader, const char* fileName) {
+	return 0;
+}
+
 struct sharc_ctx {
 	SHARC_COMPRESSION_MODE compressionMode;
 	SHARC_ENCODE_OUTPUT_TYPE outputType;
