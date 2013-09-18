@@ -1,0 +1,132 @@
+diff --git a/src/block_header.h b/src/block_header.h
+index e4659f5..85229a2 100644
+--- a/src/block_header.h
++++ b/src/block_header.h
+@@ -25,10 +25,10 @@
+ #ifndef SHARC_BLOCK_HEADER_H
+ #define SHARC_BLOCK_HEADER_H
+ 
+-#include <sys/stat.h>
++/*#include <sys/stat.h>
+ #include <stdio.h>
+ #include <time.h>
+-
++*/
+ #include "globals.h"
+ #include "byte_buffer.h"
+ 
+diff --git a/src/decode.c b/src/decode.c
+index f6f972b..13bec48 100644
+--- a/src/decode.c
++++ b/src/decode.c
+@@ -259,4 +259,4 @@ SHARC_FORCE_INLINE SHARC_DECODE_STATE sharc_decode_finish(sharc_byte_buffer *in,
+     sharc_hash_decode_finish(&state->hashDecodeState);
+ 
+     return sharc_decode_read_footer(in, state);
+-}
+\ No newline at end of file
++}
+diff --git a/src/dictionary.h b/src/dictionary.h
+index 23d1b9c..a9889c7 100644
+--- a/src/dictionary.h
++++ b/src/dictionary.h
+@@ -36,7 +36,7 @@
+ #error Unable to load dictionary due to unsupported endian
+ #endif
+ 
+-#include <string.h>
++/* #include <string.h>*/
+ 
+ #define SHARC_DICTIONARY_MAX_RESET_CYCLE_SHIFT          32
+ 
+@@ -59,4 +59,4 @@ typedef struct {
+ void sharc_dictionary_resetDirect(sharc_dictionary *);
+ void sharc_dictionary_resetCompressed(sharc_dictionary *);
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/src/globals.h b/src/globals.h
+index a9b25a3..f314c31 100644
+--- a/src/globals.h
++++ b/src/globals.h
+@@ -24,14 +24,14 @@
+ 
+ #ifndef SHARC_GLOBALS_H
+ #define SHARC_GLOBALS_H
+-
++/*
+ #include <stdint.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <stddef.h>
+ #include <stdbool.h>
+-
++*/
+ #if defined(__INTEL_COMPILER)
+ #define SHARC_FORCE_INLINE __forceinline
+ #elif defined(__GNUC__)
+diff --git a/src/hash_encode.c b/src/hash_encode.c
+index 896aa97..fa6fedf 100644
+--- a/src/hash_encode.c
++++ b/src/hash_encode.c
+@@ -172,7 +172,7 @@ SHARC_FORCE_INLINE SHARC_HASH_ENCODE_STATE sharc_hash_encode_process(sharc_byte_
+                 if ((returnState = sharc_hash_encode_checkState(out, state)))
+                     return returnState;
+             }
+-
++//no break
+         case SHARC_HASH_ENCODE_PROCESS_FINISH:
+             while (true) {
+                 while (state->shift ^ 64) {
+diff --git a/src/header.h b/src/header.h
+index 2f7d0b7..8a4a481 100644
+--- a/src/header.h
++++ b/src/header.h
+@@ -36,13 +36,13 @@
+ #ifndef _LARGEFILE64_SOURCE
+ #define _LARGEFILE64_SOURCE
+ #endif
+-
++/*
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <stdio.h>
+ #include <time.h>
+ #include <utime.h>
+-
++*/
+ #include "globals.h"
+ #include "dictionary.h"
+ #include "byte_buffer.h"
+diff --git a/src/metadata.c b/src/metadata.c
+index 1bf2cf7..b045100 100644
+--- a/src/metadata.c
++++ b/src/metadata.c
+@@ -24,7 +24,7 @@
+ 
+ #include "metadata.h"
+ 
+-SHARC_FORCE_INLINE uint_fast64_t sharc_metadata_structure_overhead() {
++SHARC_FORCE_INLINE uint_fast64_t sharc_metadata_structure_overhead( void ) {
+     return sizeof(sharc_header) + sizeof(sharc_footer);
+ }
+ 
+diff --git a/src/metadata.h b/src/metadata.h
+index eab19b0..0608dc8 100644
+--- a/src/metadata.h
++++ b/src/metadata.h
+@@ -32,9 +32,9 @@
+ #include "block_mode_marker.h"
+ #include "block_footer.h"
+ 
+-uint_fast64_t sharc_metadata_structure_overhead();
++uint_fast64_t sharc_metadata_structure_overhead( void );
+ uint_fast64_t sharc_metadata_block_structure_overhead(const uint_fast64_t);
+ uint_fast64_t sharc_metadata_max_compressed_length(const uint_fast64_t, const SHARC_COMPRESSION_MODE, const bool);
+ uint_fast64_t sharc_metadata_max_decompressed_length(const uint_fast64_t, const SHARC_COMPRESSION_MODE, const bool);
+ 
+-#endif
+\ No newline at end of file
++#endif
