@@ -27,7 +27,7 @@
 #include <globals.h>
 
 /**************** Stub functions *********************/
-SHARC_FORCE_INLINE sharc_bool sharc_header_checkValidity(sharc_header* restrict header) {
+SHARC_FORCE_INLINE sharc_bool sharc_header_check_validity(sharc_header* restrict header) {
 	return 0;
 }
 SHARC_FORCE_INLINE uint_fast32_t sharc_header_read(sharc_byte_buffer* restrict in, sharc_header* restrict header) {
@@ -60,7 +60,7 @@ int sharc_compress(struct crypto_tfm *tfm, const uint8_t *src, unsigned int slen
 	stream = ctx->CompressionStream;
 	memset(ctx->CompressionStream,0,sizeof(sharc_stream));
 
-	if ((returnState = sharc_stream_prepare(stream, src, slen, dst, *dlen, vmalloc, vfree)))
+	if ((returnState = sharc_stream_prepare(stream, (uint8_t *)src, slen, dst, *dlen, vmalloc, (void (*)(void *))vfree)))
 		return -EIO;
 
 	if ((returnState = sharc_stream_compress_init(stream, ctx->compressionMode, ctx->outputType, ctx->blockType, NULL)))
@@ -72,7 +72,7 @@ int sharc_compress(struct crypto_tfm *tfm, const uint8_t *src, unsigned int slen
 	if ((returnState = sharc_stream_compress_finish(stream)))
 		return -EIO;
 
-	*dlen = stream->out_total_written;
+	*dlen = *stream->out_total_written;
 
 	return 0;
 } 
@@ -86,7 +86,7 @@ int sharc_decompress(struct crypto_tfm *tfm, const uint8_t *src, unsigned int sl
 	stream = ctx->DecompressionStream;
 	memset(ctx->DecompressionStream,0,sizeof(sharc_stream));
 
-	if ((returnState = sharc_stream_prepare(stream, src, slen, dst, *dlen, vmalloc, vfree)))
+	if ((returnState = sharc_stream_prepare(stream, (uint8_t *)src, slen, dst, *dlen, vmalloc, (void (*)(void *))vfree)))
 		return -EIO;
 
 	if ((returnState = sharc_stream_decompress_init(stream)))
@@ -98,7 +98,7 @@ int sharc_decompress(struct crypto_tfm *tfm, const uint8_t *src, unsigned int sl
 	if ((returnState = sharc_stream_decompress_finish(stream)))
 		return -EIO;
 
-	*dlen = stream->out_total_written;
+	*dlen = *stream->out_total_written;
 
     return 0;
 }
