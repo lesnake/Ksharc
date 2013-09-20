@@ -34,7 +34,7 @@ SHARCSRCLIST =\
 block_footer.c byte_buffer.c dictionary.c hash_decode.c stream.c \
 block_header.c encode.c hash_encode.c \
 block_mode_marker.c footer.c\
-buffers.c decode.c metadata.c
+buffers.c decode.c metadata.c block_encode.c block_decode.c
 SHARCOBJLIST = $(SHARCSRCLIST:.c=.o)
 SHARCSRCPATH = $(realpath $(PWD)/$(RELATIVEPATH))
 
