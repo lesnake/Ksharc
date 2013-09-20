@@ -16,7 +16,7 @@ index e4659f5..85229a2 100644
  #include "byte_buffer.h"
  
 diff --git a/src/buffers.c b/src/buffers.c
-index 4146bdd..796cc04 100644
+index 13301d6..35ac428 100644
 --- a/src/buffers.c
 +++ b/src/buffers.c
 @@ -40,7 +40,7 @@ SHARC_FORCE_INLINE SHARC_BUFFERS_STATE sharc_buffers_max_compressed_length(uint_
@@ -25,11 +25,11 @@ index 4146bdd..796cc04 100644
  }
 -
 +/*
- SHARC_FORCE_INLINE SHARC_BUFFERS_STATE sharc_buffers_compress(uint_fast64_t *written, uint8_t *in, uint_fast64_t inSize, uint8_t *out, uint_fast64_t outSize, const SHARC_COMPRESSION_MODE compressionMode, const SHARC_ENCODE_OUTPUT_TYPE outputType, const SHARC_BLOCK_TYPE blockType, const struct stat *fileAttributes, void *(*mem_alloc)(size_t), void (*mem_free)(void *)) {
+ SHARC_FORCE_INLINE SHARC_BUFFERS_STATE sharc_buffers_compress(uint_fast64_t *restrict written, uint8_t *restrict in, uint_fast64_t inSize, uint8_t *restrict out, uint_fast64_t outSize, const SHARC_COMPRESSION_MODE compressionMode, const SHARC_ENCODE_OUTPUT_TYPE outputType, const SHARC_BLOCK_TYPE blockType, const struct stat *restrict fileAttributes, void *(*mem_alloc)(size_t), void (*mem_free)(void *)) {
      SHARC_STREAM_STATE returnState;
  
-@@ -81,4 +81,5 @@ SHARC_BUFFERS_STATE sharc_buffers_decompress(uint_fast64_t *written, uint8_t *in
-     *written = stream.out_total_written;
+@@ -86,4 +86,5 @@ SHARC_BUFFERS_STATE sharc_buffers_decompress(uint_fast64_t *restrict written, sh
+         *written = *stream.out_total_written;
  
      return SHARC_BUFFERS_STATE_OK;
 -}
@@ -37,11 +37,11 @@ index 4146bdd..796cc04 100644
 +}
 +*/
 diff --git a/src/decode.c b/src/decode.c
-index f6f972b..13bec48 100644
+index 7588881..d1992be 100644
 --- a/src/decode.c
 +++ b/src/decode.c
-@@ -259,4 +259,4 @@ SHARC_FORCE_INLINE SHARC_DECODE_STATE sharc_decode_finish(sharc_byte_buffer *in,
-     sharc_hash_decode_finish(&state->hashDecodeState);
+@@ -188,4 +188,4 @@ SHARC_FORCE_INLINE SHARC_DECODE_STATE sharc_decode_finish(sharc_byte_buffer *in,
+         sharc_block_decode_finish(&state->blockDecodeStateB);
  
      return sharc_decode_read_footer(in, state);
 -}
@@ -68,7 +68,7 @@ index 23d1b9c..a9889c7 100644
 \ No newline at end of file
 +#endif
 diff --git a/src/globals.h b/src/globals.h
-index a9b25a3..f314c31 100644
+index 4a3ace6..0d5d9ca 100644
 --- a/src/globals.h
 +++ b/src/globals.h
 @@ -24,14 +24,14 @@
@@ -89,10 +89,10 @@ index a9b25a3..f314c31 100644
  #define SHARC_FORCE_INLINE __forceinline
  #elif defined(__GNUC__)
 diff --git a/src/hash_encode.c b/src/hash_encode.c
-index 896aa97..fa6fedf 100644
+index c40209c..202bc62 100644
 --- a/src/hash_encode.c
 +++ b/src/hash_encode.c
-@@ -172,7 +172,7 @@ SHARC_FORCE_INLINE SHARC_HASH_ENCODE_STATE sharc_hash_encode_process(sharc_byte_
+@@ -173,7 +173,7 @@ SHARC_FORCE_INLINE SHARC_HASH_ENCODE_STATE sharc_hash_encode_process(sharc_byte_
                  if ((returnState = sharc_hash_encode_checkState(out, state)))
                      return returnState;
              }
@@ -102,7 +102,7 @@ index 896aa97..fa6fedf 100644
              while (true) {
                  while (state->shift ^ 64) {
 diff --git a/src/header.h b/src/header.h
-index 2f7d0b7..8a4a481 100644
+index 70e400d..8bdb96e 100644
 --- a/src/header.h
 +++ b/src/header.h
 @@ -36,13 +36,13 @@
@@ -152,12 +152,21 @@ index eab19b0..0608dc8 100644
 \ No newline at end of file
 +#endif
 diff --git a/src/stream.h b/src/stream.h
-index 01721cb..5b6afb4 100644
+index 4ffbc25..eaaf298 100644
 --- a/src/stream.h
 +++ b/src/stream.h
-@@ -94,4 +94,4 @@ SHARC_STREAM_STATE sharc_stream_decompress_utilities_get_origin_type(sharc_strea
- SHARC_STREAM_STATE sharc_stream_decompress_utilities_get_original_file_size(sharc_stream*, uint_fast64_t*);
- SHARC_STREAM_STATE sharc_stream_decompress_utilities_restore_file_attributes(sharc_stream*, const char*);
+@@ -25,7 +25,7 @@
+ #ifndef SHARC_API_STREAM_H
+ #define SHARC_API_STREAM_H
+ 
+-#include <stdint.h>
++/*#include <stdint.h>*/
+ 
+ #include "hash_encode.h"
+ #include "block_encode.h"
+@@ -98,4 +98,4 @@ SHARC_STREAM_STATE sharc_stream_decompress_finish(sharc_stream *);
+ 
+ SHARC_STREAM_STATE sharc_stream_decompress_utilities_get_header(sharc_stream*, sharc_header*);
  
 -#endif
 \ No newline at end of file
