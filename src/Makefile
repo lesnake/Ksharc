@@ -45,12 +45,33 @@ obj-m += sharc_tfm.o
 # Dépendances du module
 sharc_tfm-y += sharc.o $(addprefix $(RELATIVEPATH)/,$(SHARCOBJLIST))
 
-ccflags-y += -I$(SHARCSRCPATH) -include $(KSHARCSRCPATH)/kernelincludes.h -D_FILE_OFFSET_BITS=64 -fdata-sections -ffunction-sections -Wl,--gc-sections
+ccflags-y += -I$(SHARCSRCPATH) -include $(KSHARCSRCPATH)/kernelincludes.h -D_FILE_OFFSET_BITS=64
+# -fdata-sections -ffunction-sections -Wl,--gc-sections
 
-all:
+patched :
+	cd ../sharc &&\
+	for i in ../patches/*.patch ; do \
+	echo Applying $$i &&\
+	patch -f -p1 < $$i || exit 1 ;\
+	done ;
+	touch patched
+
+all: patched
 	@echo $(sharc_tfm-y)
 	make -C /lib/modules/$(UNAME-R)/build SHARC_USE_AS_LIBRARY=1 M=$(PWD) V=1 modules
+
+.PHONY : precommitclean clean removepatches
 
 clean:
 	make -C /lib/modules/$(UNAME-R)/build SHARC_USE_AS_LIBRARY=1 M=$(PWD) clean
 	make -C /lib/modules/$(UNAME-R)/build SHARC_USE_AS_LIBRARY=1 M=$(PWD)/$(RELATIVEPATH) clean
+
+precommitclean: clean removepatches
+
+removepatches:
+	cd ../sharc &&\
+	for i in ../patches/*.patch ; do \
+	echo Applying $$i &&\
+	patch -f -p1 -R < $$i || exit 1 ;\
+	done ;
+	rm patched
