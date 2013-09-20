@@ -15,6 +15,27 @@ index e4659f5..85229a2 100644
  #include "globals.h"
  #include "byte_buffer.h"
  
+diff --git a/src/buffers.c b/src/buffers.c
+index 4146bdd..796cc04 100644
+--- a/src/buffers.c
++++ b/src/buffers.c
+@@ -40,7 +40,7 @@ SHARC_FORCE_INLINE SHARC_BUFFERS_STATE sharc_buffers_max_compressed_length(uint_
+ 
+     return SHARC_BUFFERS_STATE_OK;
+ }
+-
++/*
+ SHARC_FORCE_INLINE SHARC_BUFFERS_STATE sharc_buffers_compress(uint_fast64_t *written, uint8_t *in, uint_fast64_t inSize, uint8_t *out, uint_fast64_t outSize, const SHARC_COMPRESSION_MODE compressionMode, const SHARC_ENCODE_OUTPUT_TYPE outputType, const SHARC_BLOCK_TYPE blockType, const struct stat *fileAttributes, void *(*mem_alloc)(size_t), void (*mem_free)(void *)) {
+     SHARC_STREAM_STATE returnState;
+ 
+@@ -81,4 +81,5 @@ SHARC_BUFFERS_STATE sharc_buffers_decompress(uint_fast64_t *written, uint8_t *in
+     *written = stream.out_total_written;
+ 
+     return SHARC_BUFFERS_STATE_OK;
+-}
+\ No newline at end of file
++}
++*/
 diff --git a/src/decode.c b/src/decode.c
 index f6f972b..13bec48 100644
 --- a/src/decode.c
@@ -126,6 +147,17 @@ index eab19b0..0608dc8 100644
  uint_fast64_t sharc_metadata_block_structure_overhead(const uint_fast64_t);
  uint_fast64_t sharc_metadata_max_compressed_length(const uint_fast64_t, const SHARC_COMPRESSION_MODE, const bool);
  uint_fast64_t sharc_metadata_max_decompressed_length(const uint_fast64_t, const SHARC_COMPRESSION_MODE, const bool);
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --git a/src/stream.h b/src/stream.h
+index 01721cb..5b6afb4 100644
+--- a/src/stream.h
++++ b/src/stream.h
+@@ -94,4 +94,4 @@ SHARC_STREAM_STATE sharc_stream_decompress_utilities_get_origin_type(sharc_strea
+ SHARC_STREAM_STATE sharc_stream_decompress_utilities_get_original_file_size(sharc_stream*, uint_fast64_t*);
+ SHARC_STREAM_STATE sharc_stream_decompress_utilities_restore_file_attributes(sharc_stream*, const char*);
  
 -#endif
 \ No newline at end of file
