@@ -41,11 +41,11 @@ SHARCSRCPATH = $(realpath $(PWD)/$(RELATIVEPATH))
 KSHARCSRCPATH = $(realpath $(PWD))
 
 # Nom du ou des modules créés
-obj-m += sharc_tfm.o
-# Dépendances du module
+obj-m += sharc_tfm.o device.o
+# Dépendances du module sharc
 sharc_tfm-y += sharc.o $(addprefix $(RELATIVEPATH)/,$(SHARCOBJLIST))
 
-ccflags-y += -I$(SHARCSRCPATH) -include $(KSHARCSRCPATH)/kernelincludes.h -D_FILE_OFFSET_BITS=64
+ccflags-y += -I$(SHARCSRCPATH) -include $(KSHARCSRCPATH)/kernelincludes.h -D_FILE_OFFSET_BITS=64 -std=gnu99
 # -fdata-sections -ffunction-sections -Wl,--gc-sections
 
 patched :
