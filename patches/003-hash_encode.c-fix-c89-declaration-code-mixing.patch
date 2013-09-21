@@ -1,0 +1,31 @@
+diff --git a/src/hash_encode.c b/src/hash_encode.c
+index c40209c..07f8b88 100644
+--- a/src/hash_encode.c
++++ b/src/hash_encode.c
+@@ -78,8 +78,10 @@ SHARC_FORCE_INLINE SHARC_HASH_ENCODE_STATE sharc_hash_encode_checkState(sharc_by
+ }
+ 
+ SHARC_FORCE_INLINE void sharc_hash_encode_kernel(sharc_byte_buffer *restrict out, uint32_t *restrict hash, const uint32_t chunk, const uint32_t xorMask, sharc_dictionary *restrict dictionary, sharc_hash_encode_state *restrict state) {
+-    SHARC_HASH_ALGORITHM(*hash, SHARC_LITTLE_ENDIAN_32(chunk), xorMask);
+-    sharc_dictionary_entry *found = &dictionary->entries[*hash];
++	sharc_dictionary_entry *found;
++
++	SHARC_HASH_ALGORITHM(*hash, SHARC_LITTLE_ENDIAN_32(chunk), xorMask);
++    found = &dictionary->entries[*hash];
+ 
+     if (chunk ^ found->as_uint32_t) {
+         found->as_uint32_t = chunk;
+@@ -136,11 +138,12 @@ SHARC_FORCE_INLINE SHARC_HASH_ENCODE_STATE sharc_hash_encode_process(sharc_byte_
+     uint32_t hash;
+     uint_fast64_t remaining;
+     uint64_t chunk;
++    uint_fast64_t limit;
+ 
+     if (in->size == 0)
+         goto exit;
+ 
+-    const uint_fast64_t limit = in->size & ~0x1F;
++    limit = in->size & ~0x1F;
+ 
+     switch (state->process) {
+         case SHARC_HASH_ENCODE_PROCESS_CHECK_STATE:
