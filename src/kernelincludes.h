@@ -15,6 +15,7 @@
 #include <linux/vmalloc.h>
 #include <linux/err.h>
 #include <linux/time.h>
+#include <linux/types.h>
 
 typedef u64 uint_fast64_t;
 typedef u32 uint_fast32_t;
